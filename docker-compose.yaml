@@ -1,0 +1,31 @@
+version: '3.8'
+volumes:
+  tgp_data_service:
+    driver: local
+services:
+  tgp_data_service:
+    image: postgres
+    volumes:
+      - tgp_data_service:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: tgp_data_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5482:5432'
+    networks:
+      - tgp-network
+  pgadmin:
+    container_name: tgp_data_service_db_admin
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - '5382:80'
+    networks:
+      - tgp-network
+networks:
+  tgp-network:
+    name: tgp-network
